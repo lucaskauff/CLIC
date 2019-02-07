@@ -4,7 +4,19 @@ using UnityEngine;
 
 public class Objective : MonoBehaviour
 {
+    public int inputsMax;
+
     public string nextLevelName;
+
+    public GameObject player;
+
+    private void Update()
+    {
+        if (inputsMax > 0 && Input.anyKeyDown)
+        {
+            inputsMax -= 1;
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
