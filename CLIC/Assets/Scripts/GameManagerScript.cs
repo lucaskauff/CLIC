@@ -5,7 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
-
+    private void Start()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Update()
     {

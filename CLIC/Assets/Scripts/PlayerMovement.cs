@@ -9,8 +9,9 @@ public class PlayerMovement : MonoBehaviour
 
     public LayerMask unwalkableMask;
     public Transform startPoint;
-    
+    public bool canWalk = true;
 
+    private int inputsCounter;
     private Vector3 nextPosition;
     private bool isWalking;
 
@@ -23,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        inputsCounter = FindObjectOfType<Objective>().inputsMax;
+
         float horizontalMovement = Input.GetAxisRaw("Horizontal");
         float verticalMovement = Input.GetAxisRaw("Vertical");
 
@@ -47,11 +50,25 @@ public class PlayerMovement : MonoBehaviour
 
             if (hit.collider == null)
             {
-                transform.position = Vector3.MoveTowards(transform.position, nextPosition, Time.deltaTime * moveSpeed);
-
-                if (!isWalking)
+                if (!canWalk)
                 {
-                    isWalking = true;
+                    Debug.LogError("00000000, the player can't move");
+                    nextPosition = transform.position;
+                    return;
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, nextPosition, Time.deltaTime * moveSpeed);
+
+                    if (!isWalking)
+                    {
+                        isWalking = true;
+                    }
+
+                    if (inputsCounter == 0 && transform.position == nextPosition)
+                    {
+                        canWalk = false;
+                    }
                 }
             }
             else
