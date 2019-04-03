@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
         counter.text = inputManager.inputsLeft.ToString();
     }
 }
