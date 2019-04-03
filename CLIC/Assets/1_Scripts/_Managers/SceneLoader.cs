@@ -9,7 +9,7 @@ public class SceneLoader : MonoBehaviour
 
     public void Awake()
     {
-        activeScene = SceneManager.GetActiveScene().name;
+        activeScene = SceneManager.GetActiveScene().name;       
     }
 
     public void LoadNewLevel(string sceneToLoad)

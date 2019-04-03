@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     InputManager inputManager;
 
+    Animator myAnim;
+
     [SerializeField, Range(1f, 10f)]
     float moveSpeed = 1f;
 
@@ -13,13 +15,16 @@ public class PlayerMovement : MonoBehaviour
     public Transform startPoint;
     public bool canWalk = true;
 
-    private int inputsCounter;
     private Vector3 nextPosition;
     private bool isWalking;
+    private bool inputCheck = false;
+    private bool wallCheck = false;
 
     void Start()
     {
         inputManager = GameManager.Instance.inputManager;
+
+        myAnim = GetComponent<Animator>();
 
         transform.position = startPoint.position;
         nextPosition = transform.position;
@@ -28,11 +33,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        inputsCounter = inputManager.inputsLeft;
-
         if (transform.position == nextPosition)
         {
             isWalking = false;
+
+            if (!wallCheck || (wallCheck && !inputManager.anyKeyPressed))
+            {
+                inputCheck = false;
+            }
         }
 
         if (inputManager.horizontalMovement != 0 && !isWalking)
@@ -48,6 +56,12 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector2 dir = nextPosition - transform.position;
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, dir.sqrMagnitude, unwalkableMask.value);
+
+            if (!inputCheck)
+            {
+                inputManager.inputsLeft--;
+                inputCheck = true;
+            }
 
             if (hit.collider == null)
             {
@@ -66,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
                         isWalking = true;
                     }
 
-                    if (inputsCounter == 0 && transform.position == nextPosition)
+                    if (transform.position == nextPosition && inputManager.inputsLeft <= 0)
                     {
                         canWalk = false;
                     }
@@ -76,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("There is an obstacle, the player can't move.");
                 nextPosition = transform.position;
+                wallCheck = true;
             }
         }
     }

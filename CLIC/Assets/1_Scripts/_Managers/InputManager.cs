@@ -8,6 +8,9 @@ public class InputManager : MonoBehaviour
 
     public int inputsLeft;
 
+    //Any key
+    public bool anyKeyPressed = false;
+
     //Player mouvement
     public float horizontalMovement = 0;
     public float verticalMovement = 0;
@@ -19,20 +22,20 @@ public class InputManager : MonoBehaviour
 
     public void Update()
     {
-        //Important !
-        if (Input.anyKeyDown)
-        {
-            if (inputsLeft > 0)
-            {
-                inputsLeft--;
-            }
-            else
-            {
-                sceneLoader.ReloadLevel();
-            }
-        }
+        anyKeyPressed = Input.anyKey;
 
         horizontalMovement = Input.GetAxisRaw("Horizontal");
         verticalMovement = Input.GetAxisRaw("Vertical");
+        //float test = Input.G
+
+        if (Input.anyKeyDown && inputsLeft > 0 && horizontalMovement == 0 && verticalMovement == 0)
+        {
+            inputsLeft--;
+        }
+
+        if (inputsLeft < 0)
+        {
+            sceneLoader.ReloadLevel();
+        }
     }
 }

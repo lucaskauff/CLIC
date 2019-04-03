@@ -7,8 +7,8 @@ public class Objective : MonoBehaviour
     SceneLoader sceneLoader;
     InputManager inputManager;
 
-    [SerializeField] string nextLevelName = default;
-    [SerializeField] int inputsMaxForThisLevel = default;
+    [SerializeField] int inputsMaxForThisLevel = 0;
+    [SerializeField] Animator fadeInOutAnim = default;
 
     private void Start()
     {
@@ -22,7 +22,7 @@ public class Objective : MonoBehaviour
     {
         if (collision.gameObject.name == "Player")
         {
-            sceneLoader.LoadNewLevel(nextLevelName);
+            fadeInOutAnim.SetTrigger("FadeOut");
         }
     }
 }
