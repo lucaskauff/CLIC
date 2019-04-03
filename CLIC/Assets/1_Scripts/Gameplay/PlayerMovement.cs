@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    InputManager inputManager;
+
     [SerializeField, Range(1f, 10f)]
     float moveSpeed = 1f;
 
@@ -17,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        inputManager = GameManager.Instance.inputManager;
+
         transform.position = startPoint.position;
         nextPosition = transform.position;
         isWalking = false;
@@ -24,23 +28,20 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        inputsCounter = FindObjectOfType<Objective>().inputsMax;
-
-        float horizontalMovement = Input.GetAxisRaw("Horizontal");
-        float verticalMovement = Input.GetAxisRaw("Vertical");
+        inputsCounter = inputManager.inputsLeft;
 
         if (transform.position == nextPosition)
         {
             isWalking = false;
         }
 
-        if (horizontalMovement != 0 && !isWalking)
+        if (inputManager.horizontalMovement != 0 && !isWalking)
         {
-            nextPosition += Vector3.right * horizontalMovement;
+            nextPosition += Vector3.right * inputManager.horizontalMovement;
         }
-        else if (verticalMovement != 0 && !isWalking)
+        else if (inputManager.verticalMovement != 0 && !isWalking)
         {
-            nextPosition += Vector3.up * verticalMovement;
+            nextPosition += Vector3.up * inputManager.verticalMovement;
         }
 
         if (nextPosition != transform.position)
@@ -52,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (!canWalk)
                 {
-                    Debug.LogError("00000000, the player can't move");
+                    Debug.Log("No CLICS left, the player can't move.");
                     nextPosition = transform.position;
                     return;
                 }
@@ -73,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                Debug.LogError("There is an obstacle, the player can't move");
+                Debug.Log("There is an obstacle, the player can't move.");
                 nextPosition = transform.position;
             }
         }
