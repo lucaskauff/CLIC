@@ -32,10 +32,5 @@ public class InputManager : MonoBehaviour
         {
             inputsLeft--;
         }
-
-        if (inputsLeft < 0)
-        {
-            sceneLoader.ReloadLevel();
-        }
     }
 }

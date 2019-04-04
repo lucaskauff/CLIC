@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    SceneLoader sceneLoader;
     InputManager inputManager;
 
     Animator myAnim;
@@ -22,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        sceneLoader = GameManager.Instance.sceneLoader;
         inputManager = GameManager.Instance.inputManager;
 
         myAnim = GetComponent<Animator>();
@@ -93,5 +95,18 @@ public class PlayerMovement : MonoBehaviour
                 wallCheck = true;
             }
         }
+    }
+
+    private void LateUpdate()
+    {
+        if (inputManager.inputsLeft < 0)
+        {
+            myAnim.SetTrigger("OnReload");
+        }
+    }
+
+    private void WaveFinished()
+    {
+        sceneLoader.ReloadLevel();
     }
 }
