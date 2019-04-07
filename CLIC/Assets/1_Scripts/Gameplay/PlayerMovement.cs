@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     InputManager inputManager;
 
     Animator myAnim;
+    BoxCollider2D myCol;
 
     [SerializeField, Range(1f, 10f)]
     float moveSpeed = 1f;
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isWalking;
     private bool inputCheck = false;
     private bool wallCheck = false;
+    public bool isSliding = false;
 
     void Start()
     {
@@ -27,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
         inputManager = GameManager.Instance.inputManager;
 
         myAnim = GetComponent<Animator>();
+        myCol = GetComponent<BoxCollider2D>();
 
         transform.position = startPoint.position;
         nextPosition = transform.position;
@@ -61,7 +64,10 @@ public class PlayerMovement : MonoBehaviour
 
             if (!inputCheck)
             {
-                inputManager.inputsLeft--;
+                if (!isSliding)
+                {
+                    inputManager.inputsLeft--;
+                }
                 inputCheck = true;
             }
 
@@ -108,5 +114,21 @@ public class PlayerMovement : MonoBehaviour
     private void WaveFinished()
     {
         sceneLoader.ReloadLevel();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Water")
+        {
+            isSliding = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Water")
+        {
+            isSliding = false;
+        }
     }
 }

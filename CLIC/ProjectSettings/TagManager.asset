@@ -13,9 +13,9 @@ TagManager:
   - UI
   - 
   - 
-  - Background
+  - Elements
   - Solid
-  - 
+  - Background
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Environment
+    uniqueID: 66835755
+    locked: 0
+  - name: Player
+    uniqueID: 566006281
     locked: 0
